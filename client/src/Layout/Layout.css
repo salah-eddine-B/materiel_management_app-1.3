@@ -1,0 +1,52 @@
+.parent-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr 200px;
+    grid-template-rows: 60px 1fr;
+    grid-template-areas:
+      "sidebar topbar topbar"
+      "sidebar main taskbar";
+    height: 100vh;
+  }
+  
+  .sidebar-layout {
+    grid-area: sidebar;
+    background: #ff6b6b;
+  }
+  
+  .top-bar-layout {
+    grid-area: topbar;
+    background: #ffd93d;
+  }
+  
+  .main-layout {
+    grid-area: main;
+    background: #6bcb77;
+    overflow-y: auto;
+  }
+  
+  .task-bar-layout {
+    grid-area: taskbar;
+    background: #4d96ff;
+  }
+  
+  /* 📱 Responsive layout for mobile */
+  @media (max-width: 768px) {
+    .parent-layout {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      grid-template-areas:
+        "topbar"
+        "sidebar"
+        "main"
+        "taskbar";
+    }
+  
+    .sidebar-layout, .top-bar-layout, .main-layout, .task-bar-layout {
+      min-height: 60px;
+    }
+  
+    .main-layout {
+      min-height: 200px;
+    }
+  }
+  
