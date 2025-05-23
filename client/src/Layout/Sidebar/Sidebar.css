@@ -1,0 +1,128 @@
+.sidebar-parent {
+  width: 250px;
+  height: 100%;
+  background-color: #0F131A;
+  transition: width 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-parent.minimized {
+  width: 80px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
+  border-bottom: 1px solid #252932;
+  flex-shrink: 0;
+  margin-bottom: 15px;
+}
+
+.sidebar-header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #F0F0F0;
+  margin-left: 10px;
+  transition: opacity 0.3s ease;
+  line-height: 1.2;
+}
+
+.sidebar-header img {
+  width: 48px;
+  height: 48px;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-header .toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-header .toggle-btn:hover img {
+  transform: scale(1.1);
+}
+
+.sidebar-body {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.sidebar-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-body ul li {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 12px 15px;
+  margin: 8px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.minimized .sidebar-body ul li {
+  justify-content: center;
+}
+.minimized .sidebar-header   {
+  justify-content: center;
+}
+
+.sidebar-body ul li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-body ul li.active {
+  background-color: #1E90FF;
+}
+
+.sidebar-body ul li.active:hover {
+  background-color: #1C86EE;
+}
+
+.sidebar-body ul li img {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-body ul li:hover img {
+  transform: scale(1.1);
+}
+
+.sidebar-body ul li span {
+  font-size: 16px;
+  font-weight: 500;
+  color: #F0F0F0;
+  margin-left: 12px;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar-footer {
+  flex-shrink: 0;
+  width: 100%;
+  padding: 15px;
+  border-top: 1px solid #252932;
+}
+
+
+
+
+
+
+
+
+

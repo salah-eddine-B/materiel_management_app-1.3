@@ -1,0 +1,82 @@
+:root {
+    /* Light Theme Colors */
+    --color-primary: #1E90FF;
+    --color-accent: #FFD93D;
+    --color-success: #6BCB77;
+    --color-danger: #FF6B6B;
+    --color-bg: #F0F0F0;
+    --color-text: #1A1A1A;
+    --color-card: #FFFFFF;
+    --color-border: #E0E0E0;
+  
+    /* Typography */
+    --font-family: 'Roboto', sans-serif;
+    --font-size-base: 16px;
+    --font-size-h1: 32px;
+    --font-size-h2: 24px;
+    --font-size-h3: 20px;
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+  }
+  
+  .dark {
+    /* Dark Theme Overrides */
+    --color-bg: #0F131A;
+    --color-card: #1A1F28;
+    --color-text: #C4C6CA;
+    --color-border: #2C3138;
+    --color-icon: #C4C6CA;
+    --color-subtle-text: #707070;
+  }
+  
+  /* Apply global styles */
+  body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Headings */
+  h1 {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-bold);
+  }
+  
+  h2 {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-medium);
+  }
+  
+  h3 {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-regular);
+  }
+  
+  /* Utility Classes */
+  .card {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-weight: var(--font-weight-medium);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-primary:hover {
+    background-color: #1C86EE;
+  }
+  
