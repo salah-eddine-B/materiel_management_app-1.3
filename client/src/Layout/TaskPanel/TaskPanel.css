@@ -1,0 +1,152 @@
+.task-panel {
+  position: fixed;
+  width: 250px;
+  background-color: var(--color-card, #FFFFFF);
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  z-index: 1000;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  user-select: none;
+  resize: both;
+}
+
+.task-panel:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.task-panel.minimized {
+  height: auto !important;
+  resize: none;
+}
+
+.task-panel-header {
+  background: linear-gradient(to right, var(--color-primary, #1E90FF), var(--color-accent, #FFD93D));
+  color: white;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move;
+}
+
+.task-panel-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.task-panel-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.minimize-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.minimize-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.task-panel-content {
+  padding: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.task-section {
+  margin-bottom: 16px;
+}
+
+.task-section h4 {
+  font-size: 14px;
+  margin: 0 0 8px 0;
+  color: var(--color-subtle-text, #707070);
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-border, #E0E0E0);
+  padding-bottom: 6px;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-item {
+  padding: 8px 10px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  background-color: var(--color-bg, #F0F0F0);
+  transition: background-color 0.2s;
+}
+
+.task-item:hover {
+  background-color: rgba(30, 144, 255, 0.05);
+}
+
+.task-name {
+  font-size: 13px;
+  color: var(--color-text, #2C3A47);
+}
+
+.task-status {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.task-status.pending {
+  background-color: #FFF5E6;
+  color: var(--color-accent, #FFD93D);
+}
+
+.task-status.in-progress {
+  background-color: #E4F8FF;
+  color: var(--color-primary, #1E90FF);
+}
+
+.task-status.completed {
+  background-color: #E6FFF1;
+  color: var(--color-success, #6BCB77);
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.action-btn {
+  padding: 8px 12px;
+  background-color: var(--color-card, #FFFFFF);
+  border: 1px solid var(--color-border, #E0E0E0);
+  border-radius: 6px;
+  color: var(--color-text, #2C3A47);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: var(--color-primary, #1E90FF);
+  color: white;
+  border-color: var(--color-primary, #1E90FF);
+} 

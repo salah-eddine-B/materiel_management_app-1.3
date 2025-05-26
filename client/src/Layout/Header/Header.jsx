@@ -2,9 +2,14 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import './Header.css';
 
+// Import relevant icons - only keeping MaterielIcon which might be useful
+import MaterielIcon from '../../assets/icon/MaterielIconColored.svg';
+
 const Header = () => {
   const { activePage, pageInfo } = useSelector(state => state.ui);
   const currentPageInfo = pageInfo[activePage] || { title: 'Page Not Found', subtitle: 'The requested page does not exist' };
+  
+  // Links without icons
   const links = ['TOUT', 'RADAR', 'RADAR-MARITIME', 'CAMERA', 'VIDEO PROJECTEUR', 'DVR', 'NVR', 'TV', 'OTHER'];
   
   return (
@@ -14,8 +19,28 @@ const Header = () => {
           <h1 className="header-title">{currentPageInfo.title}</h1>
           <p className="header-subtitle">{currentPageInfo.subtitle}</p>
         </div>
+        {currentPageInfo.title === 'Materials' && (
+          <div className="nav-menu">
+            {links.map((link, index) => (
+              <a key={index} className={`link ${index === 0 ? 'active' : ''}`}>
+                {link}
+              </a>
+            ))}
+          </div>
+        )}
         <div className="header-actions">
-          {/* Optional: Add action buttons, search, etc. */}
+          {currentPageInfo.title === 'Materials' && (
+            <>
+              <button className="btn add-btn">
+                <span className="btn-icon">+</span>
+                <span>Add</span>
+              </button>
+              <button className="btn export-btn">
+                <span className="btn-icon">↓</span>
+                <span>Export</span>
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

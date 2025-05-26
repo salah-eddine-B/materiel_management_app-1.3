@@ -1,17 +1,18 @@
 .parent-layout {
     display: grid;
-    grid-template-columns: 250px 1fr 200px;
-    grid-template-rows: 60px 1fr;
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: auto 1fr;
     grid-template-areas:
-      "sidebar topbar topbar"
-      "sidebar main taskbar";
+      "sidebar topbar"
+      "sidebar main";
     height: 100vh;
+    width: 100%;
     overflow: hidden;
   }
   
   /* When sidebar is minimized */
   .parent-layout.sidebar-minimized {
-    grid-template-columns: 80px 1fr 200px;
+    grid-template-columns: 80px 1fr;
   }
   
   .sidebar-layout {
@@ -25,6 +26,7 @@
     grid-area: topbar;
     border-bottom: 1px solid var(--color-border, #E0E0E0);
     background-color: var(--color-card, #FFFFFF);
+    width: 100%;
   }
   
   .main-layout {
@@ -32,25 +34,18 @@
     background-color: #FFFFFF;
     overflow-y: auto;
     padding: 15px;
-  }
-  
-  .task-bar-layout {
-    grid-area: taskbar;
-    border-left: 1px solid var(--color-border, #E0E0E0);
-    background-color: var(--color-card, #FFFFFF);
-    overflow-y: auto;
+    width: 100%;
   }
   
   /* 📱 Responsive layout for mobile */
   @media (max-width: 768px) {
     .parent-layout {
       grid-template-columns: 1fr;
-      grid-template-rows: auto auto 1fr auto;
+      grid-template-rows: auto auto 1fr;
       grid-template-areas:
         "topbar"
         "sidebar"
-        "main"
-        "taskbar";
+        "main";
       height: 100vh;
       overflow-y: hidden;
     }
@@ -59,7 +54,7 @@
       height: auto;
     }
   
-    .sidebar-layout, .top-bar-layout, .task-bar-layout {
+    .sidebar-layout, .top-bar-layout {
       overflow: hidden;
     }
   

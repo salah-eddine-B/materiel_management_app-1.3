@@ -2,6 +2,7 @@ import React from 'react'
 import './Layout.css'
 import Sidebar from './Sidebar/Sidebar'
 import Header from './Header/Header'
+import TaskPanel from './TaskPanel/TaskPanel'
 import { useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
 import Dashboard from '../pages/Dashboard'
@@ -24,7 +25,7 @@ export default function Layout() {
             <Route path="/files" element={<div>Files page coming soon</div>} />
           </Routes>
         </div>
-        <div className='task-bar-layout'></div>
+        <TaskPanel />
     </div>
   )
 }
