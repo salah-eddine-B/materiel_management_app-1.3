@@ -12,6 +12,7 @@ import FileIcon from '../../assets/icon/FileIcon.svg'
 
 export default function Sidebar() {
   const [showMenuTitles, setShowMenuTitles] = useState(true)
+  const [isTransitioning, setIsTransitioning] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
@@ -48,11 +49,23 @@ export default function Sidebar() {
   }, [isMinimised, dispatch])
 
   useEffect(() => {
+    setIsTransitioning(true)
+    
     if (!isMinimised) {
-      const timer = setTimeout(() => setShowMenuTitles(true), 450)
-      return () => clearTimeout(timer)
+      // Show titles after a short delay to allow the width animation to start
+      const timer = setTimeout(() => setShowMenuTitles(true), 100)
+      // Mark transition as complete after it finishes
+      const transitionTimer = setTimeout(() => setIsTransitioning(false), 400)
+      return () => {
+        clearTimeout(timer)
+        clearTimeout(transitionTimer)
+      }
     } else {
+      // Hide titles immediately when minimizing
       setShowMenuTitles(false)
+      // Mark transition as complete after it finishes
+      const transitionTimer = setTimeout(() => setIsTransitioning(false), 400)
+      return () => clearTimeout(transitionTimer)
     }
   }, [isMinimised])
 
@@ -69,20 +82,21 @@ export default function Sidebar() {
   }
 
   const toggleSidebar = () => {
-    dispatch(toggleMinimised())
+    // Don't allow toggling while transition is in progress
+    if (!isTransitioning) {
+      dispatch(toggleMinimised())
+    }
   }
 
   return (
-    <div className={`sidebar-parent ${isMinimised ? 'minimized' : ''}`}>
+    <div className={`sidebar-parent ${isMinimised ? 'minimized' : ''} ${isTransitioning ? 'transitioning' : ''}`}>
       <div className='sidebar-header'>
         <button className="toggle-btn" onClick={toggleSidebar}>
           <img src={MaterielIcon} alt='icon' />
         </button>
-        {showMenuTitles && !isMinimised && (
-          <h1>
-            Materiel<br />Management
-          </h1>
-        )}
+        <h1>
+          Materiel<br />Management
+        </h1>
       </div>
       <div className='sidebar-body'>
         <ul>
@@ -93,7 +107,7 @@ export default function Sidebar() {
               onClick={() => handleMenuClick(item.path, item.text)}
             >
               <img src={item.icon} alt={item.text} />
-              {showMenuTitles && !isMinimised && <span>{item.text}</span>}
+              <span>{item.text}</span>
             </li>
           ))}
         </ul>

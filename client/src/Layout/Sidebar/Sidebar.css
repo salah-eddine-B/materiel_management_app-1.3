@@ -2,14 +2,21 @@
   width: 250px;
   height: 100%;
   background-color: #0F131A;
-  transition: width 0.3s ease;
+  transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 100;
 }
 
 .sidebar-parent.minimized {
   width: 80px;
+}
+
+.sidebar-parent.transitioning {
+  pointer-events: none;
 }
 
 .sidebar-header {
@@ -20,6 +27,7 @@
   border-bottom: 1px solid #252932;
   flex-shrink: 0;
   margin-bottom: 15px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .sidebar-header h1 {
@@ -27,14 +35,27 @@
   font-weight: 700;
   color: #F0F0F0;
   margin-left: 10px;
-  transition: opacity 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   line-height: 1.2;
+  transform-origin: left center;
+  opacity: 1;
+  width: 150px;
+}
+
+.sidebar-parent.minimized .sidebar-header h1 {
+  transform: translateX(-20px);
+  opacity: 0;
+  width: 0;
 }
 
 .sidebar-header img {
   width: 48px;
   height: 48px;
-  transition: transform 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sidebar-parent.minimized .sidebar-header img {
+  transform: rotate(360deg);
 }
 
 .sidebar-header .toggle-btn {
@@ -69,14 +90,29 @@
   margin: 8px 8px;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
 }
 
 .minimized .sidebar-body ul li {
   justify-content: center;
 }
-.minimized .sidebar-header   {
-  justify-content: center;
+
+.sidebar-body ul li::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+}
+
+.sidebar-parent.transitioning .sidebar-body ul li::after {
+  transform: translateX(100%);
 }
 
 .sidebar-body ul li:hover {
@@ -94,7 +130,7 @@
 .sidebar-body ul li img {
   width: 24px;
   height: 24px;
-  transition: transform 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .sidebar-body ul li:hover img {
@@ -106,9 +142,18 @@
   font-weight: 500;
   color: #F0F0F0;
   margin-left: 12px;
-  transition: opacity 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   white-space: nowrap;
   overflow: hidden;
+  transform-origin: left center;
+  opacity: 1;
+  width: 150px;
+}
+
+.minimized .sidebar-body ul li span {
+  transform: translateX(-20px);
+  opacity: 0;
+  width: 0;
 }
 
 .sidebar-footer {
@@ -116,6 +161,10 @@
   width: 100%;
   padding: 15px;
   border-top: 1px solid #252932;
+}
+
+.minimized .sidebar-header {
+  justify-content: center;
 }
 
 

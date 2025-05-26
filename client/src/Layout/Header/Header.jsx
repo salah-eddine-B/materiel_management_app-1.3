@@ -5,6 +5,7 @@ import './Header.css';
 const Header = () => {
   const { activePage, pageInfo } = useSelector(state => state.ui);
   const currentPageInfo = pageInfo[activePage] || { title: 'Page Not Found', subtitle: 'The requested page does not exist' };
+  const links = ['TOUT', 'RADAR', 'RADAR-MARITIME', 'CAMERA', 'VIDEO PROJECTEUR', 'DVR', 'NVR', 'TV', 'OTHER'];
   
   return (
     <div className="header">
