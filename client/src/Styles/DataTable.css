@@ -42,37 +42,173 @@
 
 .table-container {
     flex: 1;
-    overflow: auto;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    position: relative;
 }
 
+/* Table wrapper with scrolling */
+.table-wrapper {
+    height: 100%;
+    max-height: 100%;
+    overflow: auto;
+    position: relative;
+}
+
+/* Fixed width for table */
 .materials-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 1400px; /* Ensure table is wider than container */
 }
 
-.materials-table th,
-.materials-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #e0e0e0;
+/* Fixed header */
+.materials-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 .materials-table th {
     background-color: #f8f8f8;
     font-weight: 600;
-    position: sticky;
-    top: 0;
-    z-index: 1;
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.materials-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .materials-table tbody tr:hover {
     background-color: rgba(0, 123, 255, 0.05);
 }
 
-/* Status badge styles */
+/* Column width definitions */
+.materials-table .checkbox-column {
+    width: 40px;
+}
+
+.materials-table th:nth-child(2),
+.materials-table td:nth-child(2) {
+    width: 80px; /* ID */
+}
+
+.materials-table th:nth-child(3),
+.materials-table td:nth-child(3) {
+    width: 120px; /* Unit */
+}
+
+.materials-table th:nth-child(4),
+.materials-table td:nth-child(4) {
+    width: 120px; /* Entry Date */
+}
+
+.materials-table th:nth-child(5),
+.materials-table td:nth-child(5) {
+    width: 150px; /* Material */
+}
+
+.materials-table th:nth-child(6),
+.materials-table td:nth-child(6) {
+    width: 150px; /* Model */
+}
+
+.materials-table th:nth-child(7),
+.materials-table td:nth-child(7) {
+    width: 150px; /* Serial Number */
+}
+
+.materials-table th:nth-child(8),
+.materials-table td:nth-child(8) {
+    width: 130px; /* Delivery Note */
+}
+
+.materials-table th:nth-child(9),
+.materials-table td:nth-child(9) {
+    width: 130px; /* Shuttle Record */
+}
+
+.materials-table th:nth-child(10),
+.materials-table td:nth-child(10) {
+    width: 120px; /* Status */
+}
+
+.materials-table th:nth-child(11),
+.materials-table td:nth-child(11) {
+    width: 120px; /* Exit Date */
+}
+
+.materials-table th:nth-child(12),
+.materials-table td:nth-child(12) {
+    width: 150px; /* Additional Data */
+}
+
+.materials-table th:nth-child(13),
+.materials-table td:nth-child(13) {
+    width: 120px; /* Actions */
+}
+
+/* Status styles */
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.status.green {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.status.gray {
+    background-color: #E0E0E0;
+    color: #616161;
+}
+
+.status.orange {
+    background-color: #FFF8E1;
+    color: #FFA000;
+}
+
+.status.red {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+/* Checkbox styling */
+.checkbox-column {
+    width: 40px;
+    text-align: center;
+}
+
+.checkbox-cell, .checkbox-header {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Selected row styling */
+tr.selected {
+    background-color: rgba(33, 150, 243, 0.1);
+}
+
+/* Status badge styles (keeping for backward compatibility) */
 .status-badge {
     display: inline-block;
     padding: 5px 10px;
@@ -122,7 +258,6 @@
     border-radius: 4px;
     transition: background-color 0.2s;
     flex-direction: row;
-
 }
 
 .action-btn:hover {
@@ -174,10 +309,6 @@
 @media (max-width: 768px) {
     .search-container {
         flex-direction: column;
-    }
-    
-    .table-container {
-        overflow-x: auto;
     }
     
     .action-btn {

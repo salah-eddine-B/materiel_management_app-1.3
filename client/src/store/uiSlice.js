@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   activePage: 'Overview',
+  currentFilter: 'TOUT',
   pageInfo: {
     'Overview': {
       title: 'Overview',
@@ -27,9 +28,12 @@ export const uiSlice = createSlice({
   reducers: {
     setActivePage: (state, action) => {
       state.activePage = action.payload;
+    },
+    setCurrentFilter: (state, action) => {
+      state.currentFilter = action.payload;
     }
   }
 });
 
-export const { setActivePage } = uiSlice.actions;
+export const { setActivePage, setCurrentFilter } = uiSlice.actions;
 export default uiSlice.reducer; 

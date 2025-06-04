@@ -1,16 +1,22 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCurrentFilter } from '../../store/uiSlice';
 import './Header.css';
 
 // Import relevant icons - only keeping MaterielIcon which might be useful
 import MaterielIcon from '../../assets/icon/MaterielIconColored.svg';
 
 const Header = () => {
-  const { activePage, pageInfo } = useSelector(state => state.ui);
+  const dispatch = useDispatch();
+  const { activePage, pageInfo, currentFilter } = useSelector(state => state.ui);
   const currentPageInfo = pageInfo[activePage] || { title: 'Page Not Found', subtitle: 'The requested page does not exist' };
   
   // Links without icons
   const links = ['TOUT', 'RADAR', 'RADAR-MARITIME', 'CAMERA', 'VIDEO PROJECTEUR', 'DVR', 'NVR', 'TV', 'OTHER'];
+  
+  const handleFilterClick = (filter) => {
+    dispatch(setCurrentFilter(filter));
+  };
   
   return (
     <div className="header">
@@ -22,7 +28,11 @@ const Header = () => {
         {currentPageInfo.title === 'Materials' && (
           <div className="nav-menu">
             {links.map((link, index) => (
-              <a key={index} className={`link ${index === 0 ? 'active' : ''}`}>
+              <a 
+                key={index} 
+                className={`link ${currentFilter === link ? 'active' : ''}`}
+                onClick={() => handleFilterClick(link)}
+              >
                 {link}
               </a>
             ))}
