@@ -11,108 +11,131 @@ const DataTable = () => {
   const [filteredMaterials, setFilteredMaterials] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchMaterials = async () => {
+    try {
+        setIsLoading(true);
+        const response = await fetch('http://localhost:3001/materials');
+        if (!response.ok) {
+            throw new Error('Failed to fetch materials');
+        }
+        const data = await response.json();
+        setMaterials(data);
+        setFilteredMaterials(data);
+        setError(null);
+    } catch (err) {
+        setError(err.message);
+    } finally {
+        setIsLoading(false);
+    }
+};
 
   useEffect(() => {
-    // Use mock data instead of API call
-    // We would normally fetch from '/api/materials'
-    const fetchMockMaterials = async () => {
-      try {
-        // Simulating API delay
-        setTimeout(() => {
-          // Mock data based on the JSON structure
-          const mockMaterials = [
-            {
-              "Id": "0043-25",
-              "Unit": "rabat",
-              "Entry_Date": "2025-01-14",
-              "Material": "CAMERA",
-              "Model": "HIKVISION",
-              "Serial_Number": "SDFGUYTRDGDGG",
-              "Delivery_Note_Number": "430722",
-              "Shuttle_Record_Number": "T66777",
-              "Status": "REFORME",
-              "Exit_Date": "##/##/####",
-              "Aditional_Data": "ATELIER"
-            },
-            {
-              "Id": "0037-24",
-              "Unit": "unite 1",
-              "Entry_Date": "2024-12-28",
-              "Material": "VIDEO PROJECTEUR",
-              "Model": "EPSON",
-              "Serial_Number": "fghjk",
-              "Delivery_Note_Number": "ghju",
-              "Shuttle_Record_Number": "1234",
-              "Status": "REFORME",
-              "Exit_Date": "2024-12-29",
-              "Aditional_Data": "ATELIER"
-            },
-            {
-              "Id": "0031-24",
-              "Unit": "unite 1",
-              "Entry_Date": "2024-12-28",
-              "Material": "NVR",
-              "Model": "SAMSUNG",
-              "Serial_Number": "SERIALKUUI8",
-              "Delivery_Note_Number": "guii",
-              "Shuttle_Record_Number": "jii",
-              "Status": "EN COURS",
-              "Exit_Date": "##/##/####",
-              "Aditional_Data": "ATELIER"
-            },
-            {
-              "Id": "0024-24",
-              "Unit": "unité 2",
-              "Entry_Date": "2024-12-24",
-              "Material": "RADAR",
-              "Model": "Option 2",
-              "Serial_Number": "SERIALKUUI8",
-              "Delivery_Note_Number": "678IUHJK",
-              "Shuttle_Record_Number": "RTYUI",
-              "Status": "EN COURS",
-              "Exit_Date": "##/##/####",
-              "Aditional_Data": "ATELIER"
-            },
-            {
-              "Id": "3-00",
-              "Entry_Date": "2024-12-04",
-              "Unit": "UnitTest1",
-              "Material": "RADAR",
-              "Model": "Trucam 1",
-              "Serial_Number": "23456789",
-              "Delivery_Note_Number": "2345678",
-              "Shuttle_Record_Number": "2345678",
-              "Status": "NON REPARE",
-              "Exit_Date": "17/12/2024",
-              "Aditional_Data": "HERE"
-            },
-            {
-              "Id": "1",
-              "Entry_Date": "2024-12-28",
-              "Unit": "MARRAKECH",
-              "Material": "CAMERA",
-              "Model": "SAMSUNG",
-              "Serial_Number": "ZBES6V2G40007V",
-              "Delivery_Note_Number": "430722",
-              "Shuttle_Record_Number": "1577/237",
-              "Status": "REPARE",
-              "Exit_Date": "2024-12-29",
-              "Aditional_Data": "ENVOYER A LA SOCIETE"
-            }
-          ];
-          
-          setMaterials(mockMaterials);
-          setFilteredMaterials(mockMaterials);
-          setIsLoading(false);
-        }, 800); // simulate delay
-      } catch (error) {
-        console.error('Error with mock data:', error);
-        setIsLoading(false);
-      }
-    };
-
-    fetchMockMaterials();
+    fetchMaterials();
   }, []);
+
+  // useEffect(() => {
+  //   // Use mock data instead of API call
+  //   // We would normally fetch from '/api/materials'
+  //   const fetchMockMaterials = async () => {
+  //     try {
+  //       // Simulating API delay
+  //       setTimeout(() => {
+  //         // Mock data based on the JSON structure
+  //         const mockMaterials = [
+  //           {
+  //             "Id": "0043-25",
+  //             "Unit": "rabat",
+  //             "Entry_Date": "2025-01-14",
+  //             "Material": "CAMERA",
+  //             "Model": "HIKVISION",
+  //             "Serial_Number": "SDFGUYTRDGDGG",
+  //             "Delivery_Note_Number": "430722",
+  //             "Shuttle_Record_Number": "T66777",
+  //             "Status": "REFORME",
+  //             "Exit_Date": "##/##/####",
+  //             "Aditional_Data": "ATELIER"
+  //           },
+  //           {
+  //             "Id": "0037-24",
+  //             "Unit": "unite 1",
+  //             "Entry_Date": "2024-12-28",
+  //             "Material": "VIDEO PROJECTEUR",
+  //             "Model": "EPSON",
+  //             "Serial_Number": "fghjk",
+  //             "Delivery_Note_Number": "ghju",
+  //             "Shuttle_Record_Number": "1234",
+  //             "Status": "REFORME",
+  //             "Exit_Date": "2024-12-29",
+  //             "Aditional_Data": "ATELIER"
+  //           },
+  //           {
+  //             "Id": "0031-24",
+  //             "Unit": "unite 1",
+  //             "Entry_Date": "2024-12-28",
+  //             "Material": "NVR",
+  //             "Model": "SAMSUNG",
+  //             "Serial_Number": "SERIALKUUI8",
+  //             "Delivery_Note_Number": "guii",
+  //             "Shuttle_Record_Number": "jii",
+  //             "Status": "EN COURS",
+  //             "Exit_Date": "##/##/####",
+  //             "Aditional_Data": "ATELIER"
+  //           },
+  //           {
+  //             "Id": "0024-24",
+  //             "Unit": "unité 2",
+  //             "Entry_Date": "2024-12-24",
+  //             "Material": "RADAR",
+  //             "Model": "Option 2",
+  //             "Serial_Number": "SERIALKUUI8",
+  //             "Delivery_Note_Number": "678IUHJK",
+  //             "Shuttle_Record_Number": "RTYUI",
+  //             "Status": "EN COURS",
+  //             "Exit_Date": "##/##/####",
+  //             "Aditional_Data": "ATELIER"
+  //           },
+  //           {
+  //             "Id": "3-00",
+  //             "Entry_Date": "2024-12-04",
+  //             "Unit": "UnitTest1",
+  //             "Material": "RADAR",
+  //             "Model": "Trucam 1",
+  //             "Serial_Number": "23456789",
+  //             "Delivery_Note_Number": "2345678",
+  //             "Shuttle_Record_Number": "2345678",
+  //             "Status": "NON REPARE",
+  //             "Exit_Date": "17/12/2024",
+  //             "Aditional_Data": "HERE"
+  //           },
+  //           {
+  //             "Id": "1",
+  //             "Entry_Date": "2024-12-28",
+  //             "Unit": "MARRAKECH",
+  //             "Material": "CAMERA",
+  //             "Model": "SAMSUNG",
+  //             "Serial_Number": "ZBES6V2G40007V",
+  //             "Delivery_Note_Number": "430722",
+  //             "Shuttle_Record_Number": "1577/237",
+  //             "Status": "REPARE",
+  //             "Exit_Date": "2024-12-29",
+  //             "Aditional_Data": "ENVOYER A LA SOCIETE"
+  //           }
+  //         ];
+          
+  //         setMaterials(mockMaterials);
+  //         setFilteredMaterials(mockMaterials);
+  //         setIsLoading(false);
+  //       }, 800); // simulate delay
+  //     } catch (error) {
+  //       console.error('Error with mock data:', error);
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   fetchMockMaterials();
+  // }, []);
 
   const handleSearch = () => {
     const filtered = materials.filter(item => 
