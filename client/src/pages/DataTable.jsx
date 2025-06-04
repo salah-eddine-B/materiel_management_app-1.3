@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import '../Styles/DataTable.css';
 import { useSelector } from 'react-redux';
 
-// Import ViewCard component
+// Import components
 import ViewCard from '../components/ViewCard';
+import EditMaterial from '../components/EditMaterial';
 
 // Icons (assuming these exist in your assets folder)
 import ViewIcon from '../assets/icon/view-icon.svg';
@@ -27,8 +28,9 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
   const [error, setError] = useState(null);
   const [selectedMaterials, setSelectedMaterials] = useState([]);
   
-  // State for ViewCard
+  // State for cards
   const [viewMaterial, setViewMaterial] = useState(null);
+  const [editMaterial, setEditMaterial] = useState(null);
 
   const fetchMaterials = async () => {
     try {
@@ -140,6 +142,51 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
   const handleCloseViewCard = () => {
     setViewMaterial(null);
   };
+  
+  // Handler for edit button click
+  const handleEditClick = (material) => {
+    setEditMaterial(material);
+  };
+  
+  // Handler for closing the edit card
+  const handleCloseEditCard = () => {
+    setEditMaterial(null);
+  };
+  
+  // Handler for saving edited material
+  const handleSaveEdit = async (updatedMaterial) => {
+    try {
+      // Here you would typically make an API call to update the material
+      // For example:
+      const response = await fetch(`http://localhost:3001/materials/${updatedMaterial.Id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedMaterial),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update material');
+      }
+      
+      // Update local state with updated material
+      setMaterials(prevMaterials => 
+        prevMaterials.map(material => 
+          material.Id === updatedMaterial.Id ? updatedMaterial : material
+        )
+      );
+      
+      // Close the edit modal
+      setEditMaterial(null);
+      
+      // Optionally trigger a refresh of the data
+      // fetchMaterials();
+    } catch (err) {
+      console.error('Error updating material:', err);
+      // You could set an error state here to display an error message
+    }
+  };
 
   if (error) {
     return <div className="error">Error: {error}</div>;
@@ -226,7 +273,10 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
                         >
                           <img src={ViewIcon} alt="View" title="View Details" />
                         </button>
-                        <button className="action-btn edit-btn">
+                        <button 
+                          className="action-btn edit-btn"
+                          onClick={() => handleEditClick(material)}
+                        >
                           <img src={EditIcon} alt="Edit" title="Edit" />
                         </button>
                         <button className="action-btn delete-btn">
@@ -251,6 +301,15 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
         <ViewCard 
           material={viewMaterial} 
           onClose={handleCloseViewCard} 
+        />
+      )}
+      
+      {/* EditMaterial component */}
+      {editMaterial && (
+        <EditMaterial 
+          material={editMaterial} 
+          onClose={handleCloseEditCard}
+          onSave={handleSaveEdit}
         />
       )}
     </div>
