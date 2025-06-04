@@ -6,6 +6,7 @@ import TaskPanel from './TaskPanel/TaskPanel'
 import { useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
 import Dashboard from '../pages/Dashboard'
+import DataTable from '../pages/DataTable'
 
 export default function Layout() {
   const isMinimised = useSelector((state) => state.theme.isMinimised)
@@ -21,7 +22,7 @@ export default function Layout() {
         <div className='main-layout'>
         <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/materials" element={<div>Materials page coming soon</div>} />
+            <Route path="/materials" element={<DataTable />} />
             <Route path="/files" element={<div>Files page coming soon</div>} />
           </Routes>
         </div>
