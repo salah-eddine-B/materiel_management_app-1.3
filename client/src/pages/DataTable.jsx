@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import '../Styles/DataTable.css';
 import { useSelector } from 'react-redux';
 
+// Import ViewCard component
+import ViewCard from '../components/ViewCard';
+
 // Icons (assuming these exist in your assets folder)
 import ViewIcon from '../assets/icon/view-icon.svg';
 import EditIcon from '../assets/icon/edit-icon.svg'; 
@@ -23,6 +26,9 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedMaterials, setSelectedMaterials] = useState([]);
+  
+  // State for ViewCard
+  const [viewMaterial, setViewMaterial] = useState(null);
 
   const fetchMaterials = async () => {
     try {
@@ -124,6 +130,16 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
       }
     }
   };
+  
+  // Handler for view button click
+  const handleViewClick = (material) => {
+    setViewMaterial(material);
+  };
+  
+  // Handler for closing the view card
+  const handleCloseViewCard = () => {
+    setViewMaterial(null);
+  };
 
   if (error) {
     return <div className="error">Error: {error}</div>;
@@ -204,7 +220,10 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
                       <td>{material.Exit_Date}</td>
                       <td>{material.Aditional_Data}</td>
                       <td className="action-buttons">
-                        <button className="action-btn view-btn">
+                        <button 
+                          className="action-btn view-btn"
+                          onClick={() => handleViewClick(material)}
+                        >
                           <img src={ViewIcon} alt="View" title="View Details" />
                         </button>
                         <button className="action-btn edit-btn">
@@ -226,6 +245,14 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
           </div>
         )}
       </div>
+      
+      {/* ViewCard component */}
+      {viewMaterial && (
+        <ViewCard 
+          material={viewMaterial} 
+          onClose={handleCloseViewCard} 
+        />
+      )}
     </div>
   );
 };
