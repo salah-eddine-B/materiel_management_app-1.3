@@ -19,9 +19,29 @@ app.use(express.json());
 
 // Constants
 const DATA_FILE_PATH = path.join(__dirname, 'data', 'materielData.json');
+const MODEL_FILE_PATH = path.join(__dirname, 'data', 'MaterialModel.json');
 
 // Read materiel data
 let materielData = require('./data/materielData.json');
+
+// Read or initialize model data
+let modelData = {};
+try {
+    modelData = require('./data/MaterialModel.json');
+} catch (error) {
+    // If file doesn't exist, initialize with default categories
+    modelData = {
+        'RADAR': [],
+        'RADAR-MARITIME': [],
+        'CAMERA': [],
+        'VIDEO PROJECTEUR': [],
+        'DVR-NVR': [],
+        'TV': [],
+        'OTHER': []
+    };
+    // Create the file with initial data
+    fs.writeFileSync(MODEL_FILE_PATH, JSON.stringify(modelData, null, 2));
+}
 
 // Helper function to generate next ID
 const generateNextId = () => {
@@ -146,6 +166,76 @@ app.post('/materials', validateMaterialInput, (req, res) => {
         res.status(500).json({ 
             error: 'ServerError', 
             message: 'Erreur lors du traitement de l\'ajout du matériel' 
+        });
+    }
+});
+
+// GET endpoint for models
+app.get("/model", (req, res) => {
+    const material = req.query.model; // Get the material from query parameters
+    
+    if (!material) {
+        return res.status(400).json({ 
+            error: "ValidationError", 
+            message: "Le paramètre 'model' est requis" 
+        });
+    }
+
+    const models = modelData[material.toUpperCase()];
+    if (models) {
+        res.json(models);
+    } else {
+        res.status(404).json({ 
+            error: "NotFound", 
+            message: "Aucun modèle trouvé pour ce matériel" 
+        });
+    }
+});
+
+// PUT endpoint to add a new model
+app.put("/model", (req, res) => {
+    const { material, model } = req.body;
+
+    if (!material || !model) {
+        return res.status(400).json({ 
+            error: "ValidationError", 
+            message: "Le matériel et le modèle sont requis" 
+        });
+    }
+
+    const upperMaterial = material.toUpperCase();
+    
+    if (!modelData[upperMaterial]) {
+        return res.status(404).json({ 
+            error: "NotFound", 
+            message: "Type de matériel non trouvé" 
+        });
+    }
+
+    // Check if model already exists
+    if (modelData[upperMaterial].includes(model)) {
+        return res.status(400).json({
+            error: "Duplicate",
+            message: "Ce modèle existe déjà pour ce type de matériel"
+        });
+    }
+
+    try {
+        // Add new model
+        modelData[upperMaterial].push(model);
+
+        // Write updated data to file
+        fs.writeFileSync(MODEL_FILE_PATH, JSON.stringify(modelData, null, 2));
+
+        res.json({ 
+            message: "Modèle ajouté avec succès", 
+            modelData: modelData[upperMaterial] 
+        });
+    } catch (error) {
+        console.error('Error updating model data:', error);
+        res.status(500).json({ 
+            error: "ServerError", 
+            message: "Erreur lors de l'ajout du modèle" 
         });
     }
 });

@@ -1,21 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentFilter } from '../../store/uiSlice';
 import './Header.css';
 
-// Import relevant icons - only keeping MaterielIcon which might be useful
+// Import icons
 import MaterielIcon from '../../assets/icon/MaterielIconColored.svg';
+import PlusIcon from '../../assets/icon/Plus.svg';
+import ExportIcon from '../../assets/icon/Export.svg';
 
-const Header = () => {
+// Import AddMaterial component
+import AddMaterial from '../../components/AddMaterial';
+
+const Header = ({ onAddSuccess }) => {
   const dispatch = useDispatch();
   const { activePage, pageInfo, currentFilter } = useSelector(state => state.ui);
   const currentPageInfo = pageInfo[activePage] || { title: 'Page Not Found', subtitle: 'The requested page does not exist' };
+  
+  // State for AddMaterial modal
+  const [showAddMaterial, setShowAddMaterial] = useState(false);
   
   // Links without icons
   const links = ['TOUT', 'RADAR', 'RADAR-MARITIME', 'CAMERA', 'VIDEO PROJECTEUR', 'DVR', 'NVR', 'TV', 'OTHER'];
   
   const handleFilterClick = (filter) => {
     dispatch(setCurrentFilter(filter));
+  };
+
+  // Handler for successful material addition
+  const handleAddSuccess = (message) => {
+    // Pass the success message to the parent component
+    if (onAddSuccess) {
+      onAddSuccess(message);
+    }
   };
   
   return (
@@ -41,18 +57,28 @@ const Header = () => {
         <div className="header-actions">
           {currentPageInfo.title === 'Materials' && (
             <>
-              <button className="btn add-btn">
-                <span className="btn-icon">+</span>
+              <button 
+                className="btn add-btn"
+                onClick={() => setShowAddMaterial(true)}
+              >
+                <img src={PlusIcon} alt="Add" className="btn-icon" />
                 <span>Add</span>
               </button>
               <button className="btn export-btn">
-                <span className="btn-icon">↓</span>
+                <img src={ExportIcon} alt="Export" className="btn-icon" />
                 <span>Export</span>
               </button>
             </>
           )}
         </div>
       </div>
+
+      {/* AddMaterial Modal */}
+      <AddMaterial
+        isOpen={showAddMaterial}
+        onClose={() => setShowAddMaterial(false)}
+        onSuccess={handleAddSuccess}
+      />
     </div>
   );
 };

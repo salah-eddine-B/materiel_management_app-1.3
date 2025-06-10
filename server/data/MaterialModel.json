@@ -1,0 +1,42 @@
+{
+    "RADAR": [
+      "Trucam 1",
+      "TWINGO"
+    ],
+    "RADAR-MARITIME": [
+      "TWINGO",
+      "new radar maritime"
+    ],
+    "CAMERA": [
+      "DAHUA",
+      "HIKVISION",
+      "SAMSUNG",
+      "URMET",
+      "WISENET",
+      "me"
+    ],
+    "VIDEO PROJECTEUR": [
+      "EPSON"
+    ],
+    "DVR": [
+      "DAHUA",
+      "HIKVISION",
+      "TWINGO",
+      "TWINGO",
+      "TWINGO",
+      "TWINGO",
+      "TWINGO",
+      "TWINGO"
+    ],
+    "NVR": [
+      "SAMSUNG",
+      "WISENET"
+    ],
+    "TV": [
+      "LG",
+      "SAMSUNG"
+    ],
+    "AUTRE": [
+      "TWINGO"
+    ]
+  }
