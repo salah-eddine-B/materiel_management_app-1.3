@@ -77,21 +77,6 @@ const generateNextId = () => {
     }
 };
 
-// Validation middleware
-const validateMaterialInput = (req, res, next) => {
-    const requiredFields = ['Material', 'Model', 'Serial_Number', 'Entry_Date', 'Unit'];
-    const missingFields = requiredFields.filter(field => !req.body[field]);
-
-    if (missingFields.length > 0) {
-        return res.status(400).json({
-            error: 'ValidationError',
-            message: 'Champs obligatoires manquants',
-            details: missingFields
-        });
-    }
-    next();
-};
-
 // GET endpoint
 app.get("/materials", (req, res) => {
     try {
@@ -106,7 +91,7 @@ app.get("/materials", (req, res) => {
 });
 
 // POST endpoint
-app.post('/materials', validateMaterialInput, (req, res) => {
+app.post('/materials', (req, res) => {
     try {
         const newItem = req.body;
 
@@ -236,6 +221,52 @@ app.put("/model", (req, res) => {
         res.status(500).json({ 
             error: "ServerError", 
             message: "Erreur lors de l'ajout du modèle" 
+        });
+    }
+});
+
+// PUT endpoint to update a material
+app.put('/materials/:id', (req, res) => {
+    try {
+        const materialId = req.params.id;
+        const updatedData = req.body;
+
+        // Find the index of the material to update
+        const materialIndex = materielData.findIndex(item => item.Id === materialId);
+
+        if (materialIndex === -1) {
+            return res.status(404).json({
+                error: 'NotFound',
+                message: 'Matériel non trouvé'
+            });
+        }
+
+        // Preserve the original ID
+        updatedData.Id = materialId;
+
+        // Update the material in the array
+        materielData[materialIndex] = updatedData;
+
+        // Write to file
+        fs.writeFile(DATA_FILE_PATH, JSON.stringify(materielData, null, 2), (err) => {
+            if (err) {
+                console.error('Error writing file:', err);
+                return res.status(500).json({
+                    error: 'ServerError',
+                    message: 'Erreur lors de la mise à jour'
+                });
+            }
+
+            res.json({
+                message: 'Matériel mis à jour avec succès',
+                item: updatedData
+            });
+        });
+    } catch (error) {
+        console.error('Error updating material:', error);
+        res.status(500).json({
+            error: 'ServerError',
+            message: 'Erreur lors de la mise à jour du matériel'
         });
     }
 });

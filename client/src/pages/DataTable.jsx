@@ -31,6 +31,7 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
   // State for cards
   const [viewMaterial, setViewMaterial] = useState(null);
   const [editMaterial, setEditMaterial] = useState(null);
+  const [highlightedRow, setHighlightedRow] = useState(null);
 
   const fetchMaterials = async () => {
     try {
@@ -156,8 +157,6 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
   // Handler for saving edited material
   const handleSaveEdit = async (updatedMaterial) => {
     try {
-      // Here you would typically make an API call to update the material
-      // For example:
       const response = await fetch(`http://localhost:3001/materials/${updatedMaterial.Id}`, {
         method: 'PUT',
         headers: {
@@ -176,15 +175,17 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
           material.Id === updatedMaterial.Id ? updatedMaterial : material
         )
       );
+
+      // Clear selected materials
+      setSelectedMaterials([]);
+      
+      // Set the highlighted row
+      setHighlightedRow(updatedMaterial.Id);
       
       // Close the edit modal
       setEditMaterial(null);
-      
-      // Optionally trigger a refresh of the data
-      // fetchMaterials();
     } catch (err) {
       console.error('Error updating material:', err);
-      // You could set an error state here to display an error message
     }
   };
 
@@ -241,7 +242,8 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
                   filteredMaterials.map((material, index) => (
                     <tr 
                       key={material.Id || index} 
-                      className={selectedMaterials.some(selected => selected.Id === material.Id) ? 'selected' : ''}
+                      data-id={material.Id}
+                      className={`${selectedMaterials.some(selected => selected.Id === material.Id) ? 'selected' : ''} ${highlightedRow === material.Id ? 'highlight-update' : ''}`}
                     >
                       <td className="checkbox-column">
                         <input

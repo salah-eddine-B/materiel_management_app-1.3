@@ -1,42 +1,42 @@
 [
   {
+    "Id": "0001-25",
+    "Material": "RADAR-MARITIME",
+    "Model": "TWINGO",
+    "Serial_Number": "23457896789",
     "Unit": "unité 2!45",
+    "Status": "REPARE",
     "Entry_Date": "2025-06-12",
+    "Exit_Date": "2025-06-11",
+    "Delivery_Note_Number": "889798987798",
+    "Shuttle_Record_Number": "687686",
+    "Aditional_Data": "ATELIER"
+  },
+  {
+    "Id": "0002-25",
     "Material": "RADAR-MARITIME",
     "Model": "TWINGO",
     "Serial_Number": "23457896789",
-    "Delivery_Note_Number": "889798987798",
-    "Shuttle_Record_Number": "687686",
-    "Status": "EN COURS",
-    "Exit_Date": "##/##/####",
-    "Aditional_Data": "ATELIER",
-    "Id": "0001-25"
-  },
-  {
     "Unit": "unité 2!45",
+    "Status": "NON REPARE",
     "Entry_Date": "2025-08-12",
-    "Material": "RADAR-MARITIME",
-    "Model": "TWINGO",
-    "Serial_Number": "23457896789",
+    "Exit_Date": "2025-06-13",
     "Delivery_Note_Number": "889798987798",
     "Shuttle_Record_Number": "687686",
-    "Status": "EN COURS",
-    "Exit_Date": "##/##/####",
-    "Aditional_Data": "ATELIER",
-    "Id": "0002-25"
+    "Aditional_Data": "ATELIER"
   },
   {
-    "Unit": "MARRAKECH",
-    "Entry_Date": "2025-06-07",
+    "Id": "0003-25",
     "Material": "RADAR-MARITIME",
     "Model": "TWINGO",
     "Serial_Number": "ZBES6V2G40007V",
+    "Unit": "MARRAKECH",
+    "Status": "REFORME",
+    "Entry_Date": "2025-06-07",
+    "Exit_Date": "2025-06-05",
     "Delivery_Note_Number": "1234",
     "Shuttle_Record_Number": "1577/237",
-    "Status": "NON REPARE",
-    "Exit_Date": "##/##/####",
-    "Aditional_Data": "",
-    "Id": "0003-25"
+    "Aditional_Data": "bdbeisks"
   },
   {
     "Id": "0004-25",
@@ -86,6 +86,19 @@
     "Serial_Number": "###########",
     "Delivery_Note_Number": "ghju",
     "Shuttle_Record_Number": "RTYUI",
+    "Status": "EN COURS",
+    "Exit_Date": "##/##/####",
+    "Aditional_Data": ""
+  },
+  {
+    "Id": "0008-25",
+    "Unit": "unité 2",
+    "Entry_Date": "2025-06-15",
+    "Material": "CAMERA",
+    "Model": "HIKVISION",
+    "Serial_Number": "jjoajdo",
+    "Delivery_Note_Number": "jojsdfihejno0",
+    "Shuttle_Record_Number": "j93894",
     "Status": "EN COURS",
     "Exit_Date": "##/##/####",
     "Aditional_Data": ""

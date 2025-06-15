@@ -5,8 +5,7 @@ const EditMaterial = ({ material, onClose, onSave }) => {
   // Status options
   const statusOptions = ['REPARE', 'NON REPARE', 'EN COURS', 'REFORME'];
   
-  // Initialize form state with material data
-  // Always declare hooks at the top level before any conditional logic
+  // State for form data and feedback
   const [formData, setFormData] = useState(material ? {
     Id: material.Id || '',
     Material: material.Material || '',
@@ -20,6 +19,10 @@ const EditMaterial = ({ material, onClose, onSave }) => {
     Shuttle_Record_Number: material.Shuttle_Record_Number || '',
     Aditional_Data: material.Aditional_Data || ''
   } : {});
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
   
   // Early return after hooks are defined
   if (!material) return null;
@@ -31,12 +34,46 @@ const EditMaterial = ({ material, onClose, onSave }) => {
       ...prev,
       [name]: value
     }));
+    // Clear any previous error or success message when user makes changes
+    setError(null);
+    setSuccessMessage('');
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(formData);
+    setIsLoading(true);
+    setError(null);
+    setSuccessMessage('');
+
+    try {
+      const response = await fetch(`http://localhost:3001/materials/${formData.Id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Une erreur est survenue lors de la mise à jour');
+      }
+
+      setSuccessMessage('Matériel mis à jour avec succès');
+      // Call onSave with the updated data
+      onSave(data.item);
+      
+      // Close the modal after a short delay to show the success message
+      setTimeout(() => {
+        onClose();
+      }, 1500);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -46,6 +83,18 @@ const EditMaterial = ({ material, onClose, onSave }) => {
           <h2>Edit Material</h2>
           <button className="close-btn" onClick={onClose}>&times;</button>
         </div>
+        
+        {error && (
+          <div className="error-message">
+            {error}
+          </div>
+        )}
+
+        {successMessage && (
+          <div className="success-message">
+            {successMessage}
+          </div>
+        )}
         
         <div className="edit-body">
           <form onSubmit={handleSubmit}>
@@ -199,8 +248,20 @@ const EditMaterial = ({ material, onClose, onSave }) => {
         </div>
         
         <div className="edit-footer">
-          <button className="btn secondary-btn" onClick={onClose}>Cancel</button>
-          <button className="btn primary-btn" onClick={handleSubmit}>Save Changes</button>
+          <button 
+            className="btn secondary-btn" 
+            onClick={onClose}
+            disabled={isLoading}
+          >
+            Cancel
+          </button>
+          <button 
+            className="btn primary-btn" 
+            onClick={handleSubmit}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Saving...' : 'Save Changes'}
+          </button>
         </div>
       </div>
     </div>
