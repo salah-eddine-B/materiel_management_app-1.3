@@ -1,0 +1,26 @@
+{
+    "fileName": "TEST_FICHE_001",
+    "Material_Data": [
+        {
+            "unit": "Unit A",
+            "material": "Laptop Dell XPS",
+            "attributionDate": "2024-03-20",
+            "entryDate": "2024-03-21",
+            "technicians": ["John Doe", "Jane Smith"],
+            "globalStatus": "En Panne",
+            "technicalDiagnostic": "Problème de batterie",
+            "actionTaken": "Remplacement batterie",
+            "proposedActions": "Surveillance pendant une semaine"
+        }
+    ],
+    "assignedPersons": [
+        {
+            "role": "Technicien",
+            "name": "John Doe"
+        },
+        {
+            "role": "Superviseur",
+            "name": "Jane Smith"
+        }
+    ]
+} 

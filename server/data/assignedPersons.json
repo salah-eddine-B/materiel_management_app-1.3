@@ -1,0 +1,25 @@
+{
+    "assignedPersons": [
+      {
+        "name": "Sam Smith",
+        "role": "Director"
+      },
+      {
+        "name": "Alice Johnson",
+        "role": "Manager"
+      },
+      {
+        "name": "Michael Brown",
+        "role": "Supervisor"
+      },
+      {
+        "name": "Emily Davis",
+        "role": "Coordinator"
+      },
+      {
+        "name": "Daniel White",
+        "role": "Assistant"
+      }
+    ]
+  }
+  

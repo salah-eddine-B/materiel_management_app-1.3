@@ -102,5 +102,18 @@
     "Status": "EN COURS",
     "Exit_Date": "##/##/####",
     "Aditional_Data": ""
+  },
+  {
+    "Id": "0009-25",
+    "Unit": "jsjfos",
+    "Entry_Date": "2025-07-18",
+    "Material": "RADAR",
+    "Model": "Trucam 1",
+    "Serial_Number": "ojosdjfo",
+    "Delivery_Note_Number": "ojojo",
+    "Shuttle_Record_Number": "ojoj",
+    "Status": "EN COURS",
+    "Exit_Date": "##/##/####",
+    "Aditional_Data": ""
   }
 ]

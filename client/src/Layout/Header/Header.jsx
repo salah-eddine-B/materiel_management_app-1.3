@@ -8,16 +8,18 @@ import MaterielIcon from '../../assets/icon/MaterielIconColored.svg';
 import PlusIcon from '../../assets/icon/Plus.svg';
 import ExportIcon from '../../assets/icon/Export.svg';
 
-// Import AddMaterial component
+// Import components
 import AddMaterial from '../../components/AddMaterial';
+import ExportMaterial from '../../components/ExportMaterial';
 
-const Header = ({ onAddSuccess }) => {
+const Header = ({ onAddSuccess, onExportSuccess, selectedMaterials }) => {
   const dispatch = useDispatch();
   const { activePage, pageInfo, currentFilter } = useSelector(state => state.ui);
   const currentPageInfo = pageInfo[activePage] || { title: 'Page Not Found', subtitle: 'The requested page does not exist' };
   
-  // State for AddMaterial modal
+  // State for modals
   const [showAddMaterial, setShowAddMaterial] = useState(false);
+  const [showExportMaterial, setShowExportMaterial] = useState(false);
   
   // Links without icons
   const links = ['TOUT', 'RADAR', 'RADAR-MARITIME', 'CAMERA', 'VIDEO PROJECTEUR', 'DVR', 'NVR', 'TV', 'OTHER'];
@@ -64,7 +66,11 @@ const Header = ({ onAddSuccess }) => {
                 <img src={PlusIcon} alt="Add" className="btn-icon" />
                 <span>Add</span>
               </button>
-              <button className="btn export-btn">
+              <button 
+                className="btn export-btn"
+                onClick={() => setShowExportMaterial(true)}
+                disabled={selectedMaterials.length !== 1}
+              >
                 <img src={ExportIcon} alt="Export" className="btn-icon" />
                 <span>Export</span>
               </button>
@@ -78,6 +84,13 @@ const Header = ({ onAddSuccess }) => {
         isOpen={showAddMaterial}
         onClose={() => setShowAddMaterial(false)}
         onSuccess={handleAddSuccess}
+      />
+
+      {/* ExportMaterial Modal */}
+      <ExportMaterial
+        isOpen={showExportMaterial}
+        onClose={() => setShowExportMaterial(false)}
+        materialData={selectedMaterials[0] || null}
       />
     </div>
   );

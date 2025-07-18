@@ -19,14 +19,14 @@ const StatusValue = {
   'REFORME': 'red'
 };
 
-const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
+const DataTable = ({ refreshTrigger, onMaterialSelect, selectedMaterials }) => {
   const currentFilter = useSelector(state => state.ui.currentFilter);
   const [materials, setMaterials] = useState([]);
   const [filteredMaterials, setFilteredMaterials] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedMaterials, setSelectedMaterials] = useState([]);
+  const [successMessage, setSuccessMessage] = useState('');
   
   // State for cards
   const [viewMaterial, setViewMaterial] = useState(null);
@@ -105,32 +105,17 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
       newSelectedMaterials = [...selectedMaterials, material];
     }
     
-    setSelectedMaterials(newSelectedMaterials);
-    
-    // If only one item is selected, pass it as a single object
-    // Otherwise, pass the array of selected items
     if (onMaterialSelect) {
-      if (newSelectedMaterials.length === 1) {
-        onMaterialSelect(newSelectedMaterials[0]);
-      } else if (newSelectedMaterials.length > 1) {
-        onMaterialSelect(newSelectedMaterials);
-      } else {
-        onMaterialSelect(null);
-      }
+      onMaterialSelect(newSelectedMaterials);
     }
+    console.log(JSON.stringify(newSelectedMaterials));
   };
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
-      setSelectedMaterials(filteredMaterials);
-      if (onMaterialSelect) {
-        onMaterialSelect(filteredMaterials);
-      }
+      onMaterialSelect(filteredMaterials);
     } else {
-      setSelectedMaterials([]);
-      if (onMaterialSelect) {
-        onMaterialSelect(null);
-      }
+      onMaterialSelect([]);
     }
   };
   
@@ -177,13 +162,15 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
       );
 
       // Clear selected materials
-      setSelectedMaterials([]);
+      onMaterialSelect([]);
       
       // Set the highlighted row
       setHighlightedRow(updatedMaterial.Id);
       
       // Close the edit modal
       setEditMaterial(null);
+
+      setSuccessMessage('Material updated successfully');
     } catch (err) {
       console.error('Error updating material:', err);
     }
@@ -195,6 +182,12 @@ const DataTable = ({ refreshTrigger, onMaterialSelect }) => {
 
   return (
     <div className="datatable-container">
+      {successMessage && (
+        <div className="table-success-message">
+          {successMessage}
+        </div>
+      )}
+      
       <div className="search-container">
         <input 
           type="text" 

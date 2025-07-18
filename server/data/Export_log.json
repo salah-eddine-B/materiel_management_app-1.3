@@ -1,0 +1,70 @@
+[
+  {
+    "fileName": "FICHE PANNE RADAR-MARITIME unité 2!45 1-Exp",
+    "exportId": "1-Exp",
+    "Material_Data": [
+      {
+        "unit": "unité 2!45",
+        "entryDate": "2025-08-12",
+        "material": "RADAR-MARITIME",
+        "model": "TWINGO",
+        "serialNumber": "23457896789",
+        "situation": "NON REPARE",
+        "attributionDate": "2025-08-12",
+        "technicians": [
+          "John Doe",
+          "Mike Johnson"
+        ],
+        "globalStatus": "Le matériel présente des signes de dysfonctionnement nécessitant une intervention technique. L'analyse préliminaire révèle des anomalies qui affectent ses performance",
+        "technicalDiagnostic": "jfkjs;kdpskp",
+        "actionTaken": "jpsjdmpfsjfp",
+        "proposedActions": "pojspfsjpfs",
+        "isCustomGlobalStatus": false
+      }
+    ],
+    "assignedPersons": [
+      {
+        "name": "Michael Brown",
+        "role": "Supervisor"
+      },
+      {
+        "name": "Alice Johnson",
+        "role": "Manager"
+      }
+    ]
+  },
+  {
+    "fileName": "FICHE PANNE RADAR-MARITIME MARRAKECH 2-Exp",
+    "exportId": "2-Exp",
+    "Material_Data": [
+      {
+        "unit": "MARRAKECH",
+        "entryDate": "2025-06-07",
+        "material": "RADAR-MARITIME",
+        "model": "TWINGO",
+        "serialNumber": "ZBES6V2G40007V",
+        "situation": "REFORME",
+        "attributionDate": "2025-06-07",
+        "technicians": [
+          "John Doe",
+          "Mike Johnson"
+        ],
+        "globalStatus": "Le matériel présente des signes de dysfonctionnement nécessitant une intervention technique. L'analyse préliminaire révèle des anomalies qui affectent ses performances optimales. Une évaluation approfondie est nécessaire pour déterminer l'étendue exacte des problèmes et établir un plan d'action approprié.",
+        "technicalDiagnostic": "lasjpdj",
+        "actionTaken": "pjspofjaopj",
+        "proposedActions": "josijfosifdj",
+        "isCustomGlobalStatus": false
+      }
+    ],
+    "assignedPersons": [
+      {
+        "name": "Alice Johnson",
+        "role": "Manager"
+      },
+      {
+        "name": "Emily Davis",
+        "role": "Coordinator"
+      }
+    ]
+  }
+]

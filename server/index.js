@@ -8,6 +8,9 @@ require("dotenv").config();
 
 const bodyParser = require('body-parser');
 
+const { spawn } = require('child_process');
+
+
 app.use(bodyParser.json());
 
 const port = process.env.PORT || 3001;
@@ -23,6 +26,9 @@ const MODEL_FILE_PATH = path.join(__dirname, 'data', 'MaterialModel.json');
 
 // Read materiel data
 let materielData = require('./data/materielData.json');
+
+// Read exportation data
+let exportationData = require('./data/Export_log.json');
 
 // Read or initialize model data
 let modelData = {};
@@ -270,5 +276,180 @@ app.put('/materials/:id', (req, res) => {
         });
     }
 });
+
+// GET endpoint for category counts
+app.get("/materials/counts", (req, res) => {
+    try {
+        // Define main categories
+        const mainCategories = ['RADAR', 'RADAR-MARITIME', 'CAMERA', 'VIDEO PROJECTEUR', 'DVR', 'NVR', 'TV'];
+        
+        // Initialize counts object
+        const counts = {
+            'TOUT': materielData.length,
+            'RADAR': 0,
+            'RADAR-MARITIME': 0,
+            'CAMERA': 0,
+            'VIDEO PROJECTEUR': 0,
+            'DVR-NVR': 0,
+            'TV': 0,
+            'OTHER': 0
+        };
+
+        // Count materials for each category
+        materielData.forEach(material => {
+            const materialType = material.Material?.toUpperCase();
+            
+            if (mainCategories.includes(materialType)) {
+                if (materialType === 'DVR' || materialType === 'NVR') {
+                    counts['DVR-NVR']++;
+                } else {
+                    counts[materialType]++;
+                }
+            } else {
+                counts['OTHER']++;
+            }
+        });
+
+        res.json(counts);
+    } catch (error) {
+        console.error('Error counting materials:', error);
+        res.status(500).json({ 
+            error: 'ServerError', 
+            message: 'Erreur lors du comptage des matériels' 
+        });
+    }
+});
+
+// GET endpoint for status counts
+app.get("/materials/status-counts", (req, res) => {
+    try {
+        const statusLabels = {
+            'REPARE': 'Repaired',
+            'EN COURS': 'In Progress',
+            'NON REPARE': 'Not Repaired',
+            'REFORME': 'Reformed'
+        };
+        const counts = {
+            'Repaired': 0,
+            'In Progress': 0,
+            'Not Repaired': 0,
+            'Reformed': 0
+        };
+        materielData.forEach(material => {
+            const status = statusLabels[material.Status?.toUpperCase()];
+            if (status) {
+                counts[status]++;
+            }
+        });
+        res.json(counts);
+    } catch (error) {
+        console.error('Error counting status:', error);
+        res.status(500).json({
+            error: 'ServerError',
+            message: 'Erreur lors du comptage des statuts'
+        });
+    }
+});
+
+//Read assigned persons data
+let assignedPersons = require('./data/assignedPersons.json');
+
+
+
+// Exportaion part
+// GET endpoint for assigned persons
+app.get("/assignedPersons", (req, res) => {
+    res.json(assignedPersons);
+});
+
+
+// GET endpoint to get exportation count
+app.get("/exportation/count", (req, res) => {
+    try {
+        const count = exportationData.length;
+        res.json({ count });
+    } catch (error) {
+        console.error('Error getting count:', error);
+        res.status(500).json({ error: 'Failed to get count' });
+    }
+});
+
+// POST endpoint to add a new exportation
+app.post("/exportation/Panne", (req, res) => {
+    const newExport = req.body;
+    console.log("Received new export:", newExport);
+
+    // Pass the data directly to Python script as JSON string
+    // const pythonProcess = spawn('python', [
+    //     path.join(__dirname, '../../Scripts/PanneWord.py'), 
+    //     JSON.stringify(newExport)
+    // ]);
+
+    const pythonProcess = spawn('python', [
+        path.join(__dirname, '/scripts/breackdownsheetGenerator.py'), 
+        JSON.stringify(newExport)
+    ]);
+
+    let pythonData = '';
+
+    pythonProcess.stdout.on('data', (data) => {
+        pythonData += data.toString();
+    });
+
+    pythonProcess.stderr.on('data', (data) => {
+        console.error(`Python Error: ${data}`);
+    });
+
+    pythonProcess.on('close', (code) => {
+        if (code === 0) {
+            try {
+                const result = JSON.parse(pythonData);
+                if (result.success) {
+                    exportationData.push(newExport);
+                    console.log(`✅ Data successfully added to exportation.json: ${newExport.fileName}`);
+                    
+                    // Send both the file and success message
+                    res.setHeader('Content-Disposition', `attachment; filename="${newExport.fileName}.docx"`);
+                    res.sendFile(result.filepath, (err) => {
+                        if (err) {
+                            console.error('Error sending file:', err);
+                            res.status(500).json({ 
+                                success: false, 
+                                message: "Error sending file" 
+                            });
+                    
+                        }
+                    });
+                    fs.writeFile(path.join(__dirname, 'data', 'Export_log.json'), JSON.stringify(exportationData, null, 2), (err) => {
+                        if (err) {
+                            console.error('Error writing file:', err);
+                            res.status(500).json({ 
+                                success: false, 
+                                message: "Error writing file" 
+                            });
+                        }
+                    });
+                } else {
+                    res.status(500).json({ 
+                        success: false, 
+                        message: result.message 
+                    });
+                }
+            } catch (error) {
+                console.error('Error parsing Python output:', error);
+                res.status(500).json({ 
+                    success: false, 
+                    message: "Error processing Python output" 
+                });
+            }
+        } else {
+            res.status(500).json({ 
+                success: false, 
+                message: "Failed to create document" 
+            });
+        }
+    });
+});
+
 
 server.listen(port, () => console.log("listening on port " + port));
