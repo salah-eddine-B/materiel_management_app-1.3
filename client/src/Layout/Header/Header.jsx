@@ -11,6 +11,7 @@ import ExportIcon from '../../assets/icon/Export.svg';
 // Import components
 import AddMaterial from '../../components/AddMaterial';
 import ExportMaterial from '../../components/ExportMaterial';
+import MultiExportMaterial from '../../components/MultiExportMaterial'; // <-- Add this import
 
 const Header = ({ onAddSuccess, onExportSuccess, selectedMaterials }) => {
   const dispatch = useDispatch();
@@ -69,7 +70,7 @@ const Header = ({ onAddSuccess, onExportSuccess, selectedMaterials }) => {
               <button 
                 className="btn export-btn"
                 onClick={() => setShowExportMaterial(true)}
-                disabled={selectedMaterials.length !== 1}
+                disabled={selectedMaterials.length === 0}
               >
                 <img src={ExportIcon} alt="Export" className="btn-icon" />
                 <span>Export</span>
@@ -86,12 +87,22 @@ const Header = ({ onAddSuccess, onExportSuccess, selectedMaterials }) => {
         onSuccess={handleAddSuccess}
       />
 
-      {/* ExportMaterial Modal */}
-      <ExportMaterial
-        isOpen={showExportMaterial}
-        onClose={() => setShowExportMaterial(false)}
-        materialData={selectedMaterials[0] || null}
-      />
+      {/* ExportMaterial or MultiExportMaterial Modal */}
+      {selectedMaterials.length === 1 && (
+        <ExportMaterial
+          isOpen={showExportMaterial}
+          onClose={() => setShowExportMaterial(false)}
+          materialData={selectedMaterials[0] || null}
+        />
+      )}
+      {selectedMaterials.length > 1 && selectedMaterials.length <= 4 && (
+        <MultiExportMaterial
+          isOpen={showExportMaterial}
+          onClose={() => setShowExportMaterial(false)}
+          materialData={selectedMaterials}
+        />
+      )}
+      {/* Optionally, handle >4 with a message or nothing */}
     </div>
   );
 };
